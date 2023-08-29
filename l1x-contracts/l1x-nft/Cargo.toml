@@ -1,0 +1,15 @@
+[package]
+name = "l1x_nft"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+borsh = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# l1x-sdk dependencies
+l1x-sdk = { workspace = true }
