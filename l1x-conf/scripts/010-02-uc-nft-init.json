@@ -2,7 +2,7 @@
   "smart_contract_init": [
     { "hex": "fe5493c5a5944af4e9dd1cd324dbaf2a9304122f" },
     {
-      "text": "{\"address\":\"a11ce00000000000000000000000000000000000\",\"token_idx\":\"1001\"}"
+      "text": "{\"metadata\": { \"name\":\"ShibaInu\", \"decimals\":18, \"symbol\":\"SHIB\"}}"
     }
   ]
 }

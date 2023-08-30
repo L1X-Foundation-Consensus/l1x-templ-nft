@@ -1,8 +1,11 @@
 {
   "packages": ["llvm_15@15.0.7", "cassandra_4@4.1.2"],
   "env": {
+    "RUST_LOG": "info",
     "CASSANDRA_HOST": "127.0.0.1",
     "CASSANDRA_PORT": "9042",
+    "CASSANDRA1_DATA": "./l1x-conf/cassandra1_data",
+    "CASSANDRA2_DATA": "./l1x-conf/cassandra2_data",
     "L1X_BUILD_CFG_ARTIFACTS_PATH": "$PWD/l1x-artifacts",
     "L1X_BUILD_CFG_CONTRACT_NAME": "l1x_nft",
     "L1X_BUILD_CFG_TOOLS_PATH": "$PWD/l1x-tools",
@@ -15,6 +18,7 @@
     "scripts": {
       "05_start_devnode": [
         "echo 'Start L1X devnode services...'",
+        "devbox run 14_init_setup",
         "devbox services up"
       ],
       "06_stop_devnode": [
@@ -27,8 +31,8 @@
       "07_prune_devnode": [
         "echo 'Prune L1X devnode service resources...'",
         "docker-compose -f docker-compose-cassandra-snitch.yml down",
-        "docker volume rm l1x-templ-nft_cassandra1_data",
-        "docker volume rm l1x-templ-nft_cassandra2_data"
+        "sudo rm -Rf $CASSANDRA1_DATA/*",
+        "sudo rm -Rf $CASSANDRA2_DATA/*"
       ],
       "08_check_devnode_state": [
         "echo 'Get L1X devnode services state...'",
@@ -37,7 +41,7 @@
       ],
       "10_compile": [
         "echo 'Compiling Contract $L1X_BUILD_CFG_CONTRACT_NAME ...'",
-        "if [ ! -d $L1X_BUILD_CFG_ARTIFACTS_PATH ]; then mkdir $L1X_BUILD_CFG_ARTIFACTS_PATH; fi",
+        "devbox run 14_init_setup",
         "./l1x-contracts/l1x-nft/build.sh",
         "cp target/wasm32-unknown-unknown/release/$L1X_BUILD_CFG_CONTRACT_NAME.wasm $L1X_BUILD_CFG_ARTIFACTS_PATH/.",
         "$L1X_BUILD_CFG_TOOLS_PATH/wasm-llvmir $L1X_BUILD_CFG_ARTIFACTS_PATH/$L1X_BUILD_CFG_CONTRACT_NAME.wasm",
@@ -46,11 +50,17 @@
       "11_clean": ["cargo clean"],
       "12_deploy_contract": [
         "echo Deploying Contract $L1X_BUILD_CFG_CONTRACT_NAME",
-        "RUST_LOG=info $L1X_BUILD_CFG_TOOLS_PATH/cli --private-key $VALIDATOR_PRIVATE_KEY_DEV submit-txn --payload-file-path l1x-conf/scripts/010-01-uc-nft-deploy.json"
+        "RUST_LOG=$RUST_LOG $L1X_BUILD_CFG_TOOLS_PATH/cli --private-key $VALIDATOR_PRIVATE_KEY_DEV submit-txn --payload-file-path l1x-conf/scripts/010-01-uc-nft-deploy.json"
       ],
       "13_init_contract": [
         "echo Init Contract $L1X_BUILD_CFG_CONTRACT_NAME",
-        "RUST_LOG=info $L1X_BUILD_CFG_TOOLS_PATH/cli  --private-key $VALIDATOR_PRIVATE_KEY_DEV submit-txn --payload-file-path l1x-conf/scripts/010-02-uc-nft-init.json"
+        "RUST_LOG=$RUST_LOG $L1X_BUILD_CFG_TOOLS_PATH/cli  --private-key $VALIDATOR_PRIVATE_KEY_DEV submit-txn --payload-file-path l1x-conf/scripts/010-02-uc-nft-init.json"
+      ],
+      "14_init_setup": [
+        "echo Initializing Setup",
+        "if [ ! -d $L1X_BUILD_CFG_ARTIFACTS_PATH ]; then mkdir $L1X_BUILD_CFG_ARTIFACTS_PATH; fi",
+        "if [ ! -d $CASSANDRA1_DATA ]; then mkdir $CASSANDRA1_DATA; fi",
+        "if [ ! -d $CASSANDRA2_DATA ]; then mkdir $CASSANDRA2_DATA; fi"
       ]
     }
   }
