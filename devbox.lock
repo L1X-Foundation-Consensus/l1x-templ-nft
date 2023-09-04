@@ -6,12 +6,6 @@
       "resolved": "github:NixOS/nixpkgs/6d1d80a232a355a65dc4d3bfea1f108e8dac1340#cassandra_4",
       "source": "devbox-search",
       "version": "4.1.2"
-    },
-    "llvm_15@15.0.7": {
-      "last_modified": "2023-02-24T09:01:09Z",
-      "resolved": "github:NixOS/nixpkgs/7d0ed7f2e5aea07ab22ccb338d27fbe347ed2f11#llvm_15",
-      "source": "devbox-search",
-      "version": "15.0.7"
     }
   }
 }

@@ -1,0 +1,11 @@
+{
+  "smart_contract_function_call": {
+    "contract_instance_address": {
+      "hex": "6ec4adc9a2459639b60787b744b9d46623d2ebd5"
+    },
+    "function": { "text": "nft_mint_to" },
+    "arguments": {
+      "text": "{\"to\": \"8fa80726c4e5444181ecf4eff8105d24256659f7\"}"
+    }
+  }
+}

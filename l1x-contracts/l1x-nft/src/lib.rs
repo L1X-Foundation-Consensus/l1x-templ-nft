@@ -83,7 +83,9 @@ impl NftContract {
             balance_of: LookupMap::new(STORAGE_BALANCE_OF_KEY.to_vec()),
             owner_of: LookupMap::new(STORAGE_OWNER_OF_KEY.to_vec()),
             get_approved: LookupMap::new(STORAGE_GET_APPROVED_KEY.to_vec()),
-            is_approved_for_all: LookupMap::new(STORAGE_IS_APPROVED_FOR_ALL_KEY.to_vec()),
+            is_approved_for_all: LookupMap::new(
+                STORAGE_IS_APPROVED_FOR_ALL_KEY.to_vec(),
+            ),
         };
         contract.save();
     }
@@ -205,7 +207,9 @@ impl NftContract {
 
 impl NftContract {
     fn internal_new_balance_vec(&self, address: &Address) -> Vector<u128> {
-        Vector::<u128>::new([&address.to_vec(), STORAGE_BALANCE_IDS_KEY].concat())
+        Vector::<u128>::new(
+            [&address.to_vec(), STORAGE_BALANCE_IDS_KEY].concat(),
+        )
     }
 
     fn internal_remove_token(&mut self, id: u128) -> (Address, u32) {
@@ -379,12 +383,14 @@ impl NftContract {
         let caller_id = l1x_sdk::caller_address();
 
         // Modify the state of `is_approved_for_all`
-        if let Some(approved_map) = self.is_approved_for_all.get_mut(&caller_id) {
+        if let Some(approved_map) = self.is_approved_for_all.get_mut(&caller_id)
+        {
             // Borrow the value as mutable using `get_mut` and then insert the new key-value pair
             approved_map.insert(operator.clone(), approved);
         } else {
             // If the entry doesn't exist, create a new map, insert the pair, and then insert the new map into `is_approved_for_all`
-            let mut new_approved_map = LookupMap::new(operator.clone().to_vec());
+            let mut new_approved_map =
+                LookupMap::new(operator.clone().to_vec());
             new_approved_map.insert(operator.clone(), approved);
             self.is_approved_for_all
                 .insert(caller_id.clone(), new_approved_map);
@@ -499,6 +505,9 @@ impl NftContract {
     }
 
     fn save(&mut self) {
-        l1x_sdk::storage_write(STORAGE_CONTRACT_KEY, &self.try_to_vec().unwrap());
+        l1x_sdk::storage_write(
+            STORAGE_CONTRACT_KEY,
+            &self.try_to_vec().unwrap(),
+        );
     }
 }

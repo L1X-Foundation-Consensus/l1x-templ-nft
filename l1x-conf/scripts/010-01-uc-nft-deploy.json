@@ -2,6 +2,6 @@
   "smart_contract_deployment": [
     "PUBLIC",
     "L1XVM",
-    { "file": "./l1x-artifacts/l1x_nft.o" }
+    { "file": "/home/l1x/l1x-ws/l1x-artifacts/l1x_nft.o" }
   ]
 }
