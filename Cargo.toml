@@ -1,6 +1,6 @@
 [workspace]
 members = [
-	"l1x-contracts/l1x-nft",
+	"l1x-contracts/l1x_nft",
 ]
 
 [workspace.package]

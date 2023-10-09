@@ -4,6 +4,6 @@
   },
   "function": { "text": "nft_balance_of" },
   "arguments": {
-    "text": "{ \"account_id\": \"c81ddb9dfbe6b345b0265ff2405dc6c9826cb72e\" }"
+    "text": "{ \"owner\": \"c81ddb9dfbe6b345b0265ff2405dc6c9826cb72e\" }"
   }
 }
